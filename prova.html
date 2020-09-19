@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Tërmetet</title>
+    <link rel="SHORTCUT ICON" href="assets/img/min_logo.png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="assets/css/mdb.min.css">
+    <!-- MDBootstrap Datatables  -->
+    <link href="assets/css/addons/datatables2.min.css" rel="stylesheet">
+    <!-- MDBootstrap Datatables  -->
+    <link href="assets/css/addons/datatables-select2.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+    <script src="./L.Icon.Pulse.js"></script>
+    <link rel="stylesheet" href="./L.Icon.Pulse.css" />
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100vh;
+            min-height: 100vh;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header,
+        footer {
+            flex: auto;
+        }
+
+        main {
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            flex: auto;
+        }
+
+        .btn .fa.fa-sm {
+            font-size: 1rem;
+            margin-top: -5px;
+        }
+
+        #tabela {
+            overflow-y: scroll;
+        }
+
+        .toGrey img {
+            filter: grayscale(1);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- Navbar -->
+        <nav class="mb-1 navbar navbar-expand-lg navbar-light lighten-4" style="background-color:  #76bb2b2b;">
+            <a class=" navbar-brand" href="#">
+                <img src="assets/img/logo.png" height="30" alt="" loading="lazy" />
+                <span class="navbar-brand">Joan Bushi</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent-333" aria-controls="navbarSupportedContent-333"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+                <ul class="navbar-nav ml-auto nav-flex-icons">
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light">
+                            <i class="fas fa-globe-europe fa-2x" id="map-icon" style="color:blue"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light">
+                            <i class="fas fa-table fa-2x" id="table-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cog fa-2x"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                            aria-labelledby="navbarDropdownMenuLink-333">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Navbar i thjeshtë-->
+
+    <main>
+        <!-- Main Content-->
+        <div class="container-fluid" style="height: 100vh;">
+            <div class="row" style="height: 100vh;">
+                <div class="col-md-3">
+                    <!--Lloji i hartes-->
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-deep-purple btn-rounded waves-effect"><i
+                                class="fas fa-anchor fa-sm pr-2" aria-hidden="true"></i> Satelite</button>
+                        <button type="button" class="btn btn-outline-deep-purple btn-rounded waves-effect"><i
+                                class="far fa-sun fa-sm pr-2" aria-hidden="true"></i>Middle</button>
+                        <button type="button" class="btn btn-outline-deep-purple btn-rounded waves-effect"><i
+                                class="fas fa-user-secret fa-sm pr-2" aria-hidden="true"></i>Right</button>
+                    </div>
+                    <!--Lloji i hartes-->
+                </div>
+                <!-- Harta-->
+                <div class="col-md-8" id="map" style="flex: 1; max-width: 100vw;">
+                    <div id="map"></div>
+                    <script src="AllTermetet.js"> // Të dhënat për tërmetet: earthQuakePoints[][] përmban të dhënat
+		// earthQuakePoints[][0] : Data
+		// earthQuakePoints[][1] : Ora
+		// earthQuakePoints[][2] : Magnituda
+		// earthQuakePoints[][3] : Vendi
+		// earthQuakePoints[][4] : N
+		// earthQuakePoints[][5] : E
+		// earthQuakePoints[][6] : Thellësia
+                    </script>
+                    <script src="./leaflet-heat.js"></script>
+                    <script src="./tectonics.js"></script>
+                    <script>
+
+                        var os_map = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+                            ot_map = '<a href="http://opentopomap.org/">OpenTopoMap</a>';
+
+                        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            osmAttrib = '&copy; ' + os_map + ' Contributors',
+                            otmUrl = 'http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                            otmAttrib = '&copy; ' + ot_map + ' Contributors';
+
+                        var osmMap = L.tileLayer(osmUrl, { attribution: osmAttrib }),
+                            otmMap = L.tileLayer(otmUrl, { attribution: otmAttrib });
+
+                        // Opsionet për hartën (qendra: gjerësi gjeografike, gjatësi gjeografike dhe shkalla e zoom)
+                        var mapOptions = {
+                            layers: [osmMap],
+                            center: [41.0, 19.818],
+                            zoom: 8
+                        }
+                        var map = new L.map('map', mapOptions); // Creating a map object 
+
+                        var baseLayers = {
+                            "Open Street Map": osmMap,
+                            "Topography": otmMap
+                        };
+
+                        // Creating a Layer object
+                        var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                        map.addLayer(layer);      // Adding layer to the map
+
+                        var circleCenter = new Array(earthQuakePoints.length);
+                        var magn;
+                        var layerGroups = {};
+                        for (var i = 0; i < earthQuakePoints.length; ++i) {
+                            layerGroups[i] = L.layerGroup().addTo(map);
+                        }
+                        var latestQuake = L.layerGroup().addTo(map);
+                        var lGbigTermet = L.layerGroup()//.addTo(map);     // Magnitude >4
+                        var lGsmallTermet = L.layerGroup()//.addTo(map);   // Magnitude <3
+                        var lGaverageTermet = L.layerGroup()//.addTo(map); // Magnitude 3-4
+                        for (var i = 0; i < earthQuakePoints.length; i++) {
+                            circleCenter = [earthQuakePoints[i][4], earthQuakePoints[i][5]];
+                            magn = 3 * earthQuakePoints[i][2];
+                            earthQuakePoints[i][2] > 4 ? ngjyra = "red" : earthQuakePoints[i][2] < 3 ? ngjyra = "blue" : ngjyra = "yellow";
+                            //earthQuakePoints[i][2] > 4 ? z = 10000000000 : earthQuakePoints[i][2] < 3 ? z = 50 : z = 500;
+                            //var circle = L.circle(circleCenter, magn, { color: 'blue', weight: 2, fillColor: '#f03', fillOpacity: 0.4 });
+                            var circle = new L.circleMarker(circleCenter, { radius: magn, stroke: true, color: "blue", opacity: 0.3, weight: 1, fill: true, fillColor: ngjyra, fillOpacity: 0.3 });
+                            circle.bindPopup("Magnituda: " + earthQuakePoints[i][2].toString() + "<br>" + "Thell&euml;sia: " + earthQuakePoints[i][6].toString() + " km" + "<br>" + "Data: " + earthQuakePoints[i][0] + "<br>" + earthQuakePoints[i][3]);
+                            if (i < 20) {
+                                latestQuake.addLayer(circle);
+                            }
+                            if (earthQuakePoints[i][2] > 4) {
+                                lGbigTermet.addLayer(circle);
+                            } else if (earthQuakePoints[i][2] < 3) {
+                                lGsmallTermet.addLayer(circle);
+                            } else {
+                                lGaverageTermet.addLayer(circle);
+                            }
+                        }
+
+                        var tektonOptions = { color: 'red', weight: 2, opacity: 1.0 };
+                        var tektorrOptions = { color: 'blue', weight: 2, opacity: 0.9 };
+                        var shOptions = { color: 'blue', weight: 2, opacity: 1.0, fillColor: 'blue', fillOpacity: 0.9 };
+                        var pOptions = { color: 'blue', weight: 2, opacity: 1.0, fillColor: 'lightblue', fillOpacity: 0.9 };
+                        var trOptions = { color: 'red', weight: 2, opacity: 1.0, fillColor: 'red', fillOpacity: 0.95 };
+
+                        var lGTectonics = L.layerGroup()//.addTo(map);
+
+                        var polytekton = new L.Polyline(alltekton, tektonOptions);
+                        lGTectonics.addLayer(polytekton);
+
+                        var polytekBlue = new L.Polyline(alltektonBlue, tektorrOptions);
+                        lGTectonics.addLayer(polytekBlue);
+
+                        var polyallsh = new L.Polygon(allsh, shOptions);
+                        lGTectonics.addLayer(polyallsh);
+
+                        var polyallp = new L.Polygon(allp, pOptions);
+                        lGTectonics.addLayer(polyallp);
+
+                        var polyalltr = new L.Polygon(alltr, trOptions);
+                        lGTectonics.addLayer(polyalltr);
+
+                        var lGHeatMap = L.layerGroup()//.addTo(map);
+
+                        var quakePoints = new Array(earthQuakePoints.length); // rows
+                        for (var i = 0; i < quakePoints.length; i++) quakePoints[i] = new Array(3); // 3 columns
+
+                        for (var i = 0; i < earthQuakePoints.length; i++) {
+                            quakePoints[i][0] = earthQuakePoints[i][4];
+                            quakePoints[i][1] = earthQuakePoints[i][5];
+                            quakePoints[i][2] = earthQuakePoints[i][2];
+                        }
+
+                        var concentration = L.heatLayer(quakePoints, {
+                            minOpacity: 0.7,
+                            radius: 10,
+                            blur: 15,
+                            maxZoom: 20,
+                            gradient: { 0.0: 'green', 0.5: 'yellow', 1.0: 'red' },
+                            max: 6
+                        });
+                        lGHeatMap.addLayer(concentration);
+
+                        var pulsingIcon = L.icon.pulse({ iconSize: [15, 15], color: 'green', fillColor: 'green' });
+                        var picon = L.marker([earthQuakePoints[0][4], earthQuakePoints[0][5]], { icon: pulsingIcon, zIndexOffset: 1000, title: 'Last EarthQuake' });
+                        picon.bindPopup("Magnituda: " + earthQuakePoints[0][2].toString() + "<br>" + "Thell&euml;sia: " + earthQuakePoints[0][6].toString() + " km" + "<br>" + "Data: " + earthQuakePoints[0][0] + "<br>" + earthQuakePoints[0][3]);
+                        latestQuake.addLayer(picon);
+
+                        var overlay = { 'Big Earthquake M>4': lGbigTermet, 'Average Earthquake 3<=M<=4': lGaverageTermet, 'Small Earthquake M<3': lGsmallTermet, 'Tectonics': lGTectonics, 'Concentration': lGHeatMap };
+                        L.control.layers(baseLayers, overlay, { autoZIndex: false }).addTo(map);
+
+
+                    </script>
+                </div>
+                <!--Harta-->
+
+                <!--Tabela me te dhenat-->
+                <div id="tabela"></div>
+                <!--Tabela me te dhenat-->
+
+            </div>
+        </div>
+
+    </main>
+    <!-- Footer -->
+    <footer class="page-footer font-small navbar-light lighten-4" style="background-color:#76bb2b2b;">
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+            <a href="#"> Joan Bushi</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="assets/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="assets/js/mdb.min.js"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="assets/js/addons/datatables2.min.js"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="assets/js/addons/datatables-select2.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript">
+        var te_dhena = "";
+        // Script per ndryshimin nga map-tabel dhe anasjelltas
+        for (var i = 0; i < earthQuakePoints.length; i++) {
+            var data = earthQuakePoints[i][0];
+            var ora = earthQuakePoints[i][1];
+            var qendra = earthQuakePoints[i][3];
+            var magnituda = earthQuakePoints[i][2];
+            te_dhena +=
+                '<tr>' +
+                '<td></td>' +
+                '<td>' + data + '</td>' +
+                '<td>' + ora + '</td>' +
+                '<td>' + qendra + '</td>' +
+                '<td>' + magnituda + '</td>' +
+                '</tr>';
+        }
+        var myTable =
+            '<table id="dt-all-checkbox" class="table" cellspacing="0" width="100%">' +
+            '<thead>' +
+            '<tr>' +
+            ' <th style="visibility:hidden"></th>' +
+            ' <th class="th-sms" >Data</th>' +
+            ' <th class="th-sms">Ora</th>' +
+            ' <th class="th-sms">Qendra</th>' +
+            ' <th class="th-sms">Magnituda</th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody>' +
+            //fillon data jon
+            te_dhena +
+            '</tbody>' +
+            '</table>';
+
+        $("#tabela").append(myTable);
+        $("#tabela").css('display', 'none',);
+        $("#tabela").css('flex', '1 1 0%');
+        $("#tabela").css('max-width', '30vw');
+        $("#tabela").css('outline', 'none');
+        $("#tabela").css('max-height', ' 100vh');
+        var clicked_tabel = false;
+
+        $("#table-icon").button().click(function (event) {
+            if (clicked_tabel) {
+                clicked_tabel = false;
+                $('#table-icon').css('color', 'inherit');
+            }
+            else {
+                clicked_tabel = true;
+                $('#table-icon').css('color', 'blue');
+            }
+            $("#tabela").toggle(600);
+
+        });
+
+
+        // layer.options opens only when clicked
+        $(".leaflet-control-layers-toggle").on("mouseover", function () {
+            //this will make sure that layer popup menu
+            //not opens when mouseover
+            event.stopPropagation();
+        });
+
+        // js i tabeles 2
+        $(document).ready(function () {
+            $('#dt-all-checkbox').dataTable({
+
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox select-checkbox-all',
+                    targets: 0
+                }],
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                }
+            });
+        });
+
+    </script>
+
+    </script>
+</body>
+
+</html>

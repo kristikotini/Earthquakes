@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Afishimi i T&euml;rmeteve</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+		integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+		crossorigin="" />
+	<!-- Make sure you put this AFTER Leaflet's CSS -->
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+		integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+		crossorigin=""></script>
+</head>
+
+<body>
+	<h2>T&euml;rmetet n&euml; Shqip&euml;ri</h2>
+	<div id="map" style="width: 1020px; height: 900px"></div>
+	<script src="earthQPoints.js"> // Të dhënat për tërmetet: earthQuakePoints[][] përmban të dhënat
+	</script>
+	<script>
+		// Opsionet për hartën (qendra: gjerësi gjeografike, gjatësi gjeografike dhe shkalla e zoom)
+		var mapOptions = {
+			center: [41.0, 19.818],
+			zoom: 8
+		}
+		var map = new L.map('map', mapOptions); // Creating a map object 
+
+		// Creating a Layer object
+		var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+		map.addLayer(layer);      // Adding layer to the map
+
+		var circleCenter = new Array(earthQuakePoints.length);
+		var magn;
+		var layerGroups = {};
+		for (var i = 0; i < earthQuakePoints.length; ++i) {
+			layerGroups[i] = L.layerGroup().addTo(map);
+		}
+		for (var i = 0; i < earthQuakePoints.length; i++) {
+			circleCenter = [earthQuakePoints[i][4], earthQuakePoints[i][5]];
+			magn = 700 * earthQuakePoints[i][2];
+			var circle = L.circle(circleCenter, magn, { color: 'blue', weight: 2, fillColor: '#f03', fillOpacity: 0.4 });
+			circle.bindPopup("Magnituda: " + earthQuakePoints[i][2].toString() + "<br>" + "Thell&euml;sia: " + earthQuakePoints[i][6].toString() + " km" + "<br>" + "Data: " + earthQuakePoints[i][0]);
+			layerGroups[i].addLayer(circle);
+		}
+	</script>
+</body>
+
+</html>

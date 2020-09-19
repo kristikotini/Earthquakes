@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Tërmetet</title>
+    <link rel="SHORTCUT ICON" href="assets/img/min_logo.png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="assets/css/mdb.min.css">
+    <!-- MDBootstrap Datatables  -->
+    <link href="assets/css/addons/datatables2.min.css" rel="stylesheet">
+    <!-- MDBootstrap Datatables  -->
+    <link href="assets/css/addons/datatables-select2.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+    <script src="./L.Icon.Pulse.js"></script>
+    <link rel="stylesheet" href="./L.Icon.Pulse.css" />
+</head>
+
+<body>
+    <header>
+        <!-- Navbar -->
+        <nav class="mb-1 navbar navbar-expand-lg navbar-light lighten-4">
+            <a class=" navbar-brand abushi" href="#">
+                <img src="assets/img/logo.png" height="30" alt="" loading="lazy" />
+                <span class="navbar-brand">
+                    <h4>Joan Bushi</h4>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent-333" aria-controls="navbarSupportedContent-333"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+                <ul class="navbar-nav ml-auto nav-flex-icons">
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light">
+                            <i class="fas fa-globe-europe fa-2x" id="map-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light">
+                            <i class="fas fa-table fa-2x" id="table-icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Navbar i thjeshtë-->
+
+    <main>
+        <!-- Main Content-->
+        <div class="container-fluid" id="divmain">
+            <!-- Moduli termeti fundit-->
+            <div class="modal fade modal-side" id="centralModalInfo" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-notify  modal-side modal-bottom-left" id="llojiModulit" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+                        <!--Header-->
+                        <div class="modal-header text-center">
+                            <p class="heading lead ">Termeti Fundit</p>
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="white-text">&times;</span>
+                            </button>
+                        </div>
+                        <!--Body-->
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <p id="infoTermet"></p>
+                            </div>
+                        </div>
+                        <!--Footer-->
+                        <div class="modal-footer justify-content-center">
+                            <a id="butonModuli" type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+                        </div>
+                    </div>
+                    <!--/.Content-->
+                </div>
+            </div>
+            <!-- Moduli termeti fundit-->
+            <div class="row">
+
+                <!-- Harta-->
+                <div class="col-md-8" id="map"></div>
+                <!--Harta-->
+
+                <!--Tabela me te dhenat-->
+                <div id="tabela"></div>
+                <!--Tabela me te dhenat-->
+
+            </div>
+        </div>
+
+    </main>
+    <!-- Footer -->
+    <footer class="page-footer font-small navbar-light lighten-4">
+
+        <!-- Copyright -->
+        <h5 class="text-center afooter">© 2020 Copyright: <a style="color:black" href="#">
+                Joan Bushi</a>
+        </h5>
+
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="assets/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="assets/js/mdb.min.js"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="assets/js/addons/datatables2.min.js"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="assets/js/addons/datatables-select2.min.js"></script>
+    <!--Harta JS-->
+    <script src="AllTermetet.js"> // Të dhënat për tërmetet: earthQuakePoints[][] përmban të dhënat
+        // earthQuakePoints[][0] : Data
+        // earthQuakePoints[][1] : Ora
+        // earthQuakePoints[][2] : Magnituda
+        // earthQuakePoints[][3] : Vendi
+        // earthQuakePoints[][4] : N
+        // earthQuakePoints[][5] : E
+        // earthQuakePoints[][6] : Thellësia
+    </script>
+    <script src="./leaflet-heat.js"></script>
+    <script src="./tectonics.js"></script>
+    <script src="./harta.js"></script>
+    <!-- Custom scripts tabela,model-->
+    <script src="./customscripts.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript"></script>
+
+
+</body>
+
+</html>

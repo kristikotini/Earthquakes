@@ -1,0 +1,79 @@
+html,
+        body {
+            margin: 0;
+            height: 100vh;
+            min-height: 100vh;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header,
+        footer {
+            flex: auto;
+        }
+
+        main {
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            flex: auto;
+        }
+
+        .btn .fa.fa-sm {
+            font-size: 1rem;
+            margin-top: -5px;
+        }
+
+        #tabela {
+            overflow-y: scroll;
+        }
+
+        .toGrey img {
+            filter: grayscale(1);
+        }
+
+        .legend {
+            line-height: 18px;
+            color: #555;
+        }
+
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+        .abushi :hover {
+            color: #007bff;
+        }
+        nav{
+            background-color:  #76bb2b2b;
+        }
+        #map-icon{
+            color:blue;
+        }
+        #map{
+            flex: 1;
+             max-width: 100vw; 
+             height: 85.7vh;
+        }
+        .afooter{
+            color:black;
+        }
+        footer{
+            background-color:#76bb2b2b;
+        }
+        #tabela{
+            display:none;
+            flex:1 1 0%;
+            max-width:36vw;
+            outline:none;
+            max-height:85.7vh;
+        }
+       #divmain{
+            max-height: 85.7vh;
+       }
